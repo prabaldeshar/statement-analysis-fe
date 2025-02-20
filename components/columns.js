@@ -72,20 +72,27 @@ function DataTableColumnHeader({ column, title, className }) {
 }
 
 function DataTableFilter({ column, title, options }) {
+  const currentFilter = column.getFilterValue()
+  console.log(`current Filter ${currentFilter}`)
+  console.log(`options ${options}`)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="-ml-3 h-8 data-[state=open]:bg-accent">
-          <span>{title}</span>
+          <span>{title} {currentFilter ? `(${currentFilter})` : ""}</span>
           <ChevronsUpDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuItem onClick={() => column.setFilterValue(null)}>All</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => column.setFilterValue(null)}>
+        {currentFilter === null && <Check className="mr-2 h-4 w-4 opacity-100" />}
+          All
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         {options.map((option) => (
           <DropdownMenuItem key={option} onClick={() => column.setFilterValue(option)}>
-            <Check className={cn("mr-2 h-4 w-4", String(column.getFilterValue()).toLowerCase() === String(option).toLowerCase() ? "opacity-100" : "opacity-0")} />
+            {currentFilter === option && <Check className="mr-2 h-4 w-4 opacity-100" />}
             {option}
           </DropdownMenuItem>
         ))}
