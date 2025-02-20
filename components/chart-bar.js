@@ -25,7 +25,6 @@ const chartConfig = {
 }
 
 export function ChartBar({chartData, title="Bar Chart", dateRange="January - June 2024", dataKey="category"}) {
-console.log("Chart Data Received:", chartData);
   return (
     <Card>
       <CardHeader>

@@ -2,6 +2,7 @@
 
 import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import {convertDateTimeStringToMonthDay} from "../utils/date"
 
 import {
   Card,
@@ -51,7 +52,7 @@ export function ChartLine({chartData, XAxisDataKey="month", LineDataKey="desktop
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => convertDateTimeStringToMonthDay(value)}
             />
             <ChartTooltip
               cursor={false}
