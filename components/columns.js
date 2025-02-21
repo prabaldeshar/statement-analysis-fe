@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-let categoryOptions = ["Food", "Transport", "Shopping", "Entertainment"]
-let paymentMethodOptions = ["Cash", "Credit Card", "Debit Card", "UPI"]
+let categoryOptions = []
+let paymentMethodOptions = []
 let transactionTypeOptions = ["Withdraw", "Deposit"]
 
 
@@ -86,7 +86,7 @@ function DataTableFilter({ column, title, options }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuItem onClick={() => column.setFilterValue(null)}>
-        {currentFilter === null && <Check className="mr-2 h-4 w-4 opacity-100" />}
+        {currentFilter === undefined && <Check className="mr-2 h-4 w-4 opacity-100" />}
           All
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -128,7 +128,7 @@ export const columns = [
     cell: ({ row }) => {
       const category = row.getValue("category")
       return (
-        <div className="px-4 py-2 text-center font-medium bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
+        <div className="flex items-center justify-start w-full">
           {category}
         </div>
       )
