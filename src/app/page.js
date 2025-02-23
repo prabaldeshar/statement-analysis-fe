@@ -7,6 +7,9 @@ import { ChartBar } from "../../components/chart-bar";
 import { useEffect, useState } from "react";
 import { ChartLine } from "../../components/chart-line";
 import { DataTable } from "../../components/data-table";
+import { Upload } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import UploadDialog from "../../components/uploadDialog";
 
 function getData() {
   // Fetch data from your API here.
@@ -38,6 +41,7 @@ export default function Home() {
   const [paymentMethodBarChartData, setPaymentMethodBarChartData] = useState([]);
   const [expensesLineChartData, setExpensesLineChartData] = useState([]);
   const [transactionTableList, setTransactionTableList] = useState([]);
+  const [isUploadOpen, setIsUploadOpen] = useState(false); 
 
   const chartData = [
     { date: "January", amount: 186 },
@@ -47,6 +51,10 @@ export default function Home() {
     { date: "May", amount: 209 },
     { date: "June", amount: 214 },
   ]
+
+  const updateUploadState = (uploadState) => {
+    setIsUploadOpen(uploadState)
+  }
 
   useEffect(() => {
     fetch("http://localhost:8000/expenses/category/")
@@ -111,7 +119,15 @@ export default function Home() {
   const tableData = getData();
 
   return (
-    <> 
+    <>
+    <main className="min-h-screen p-8">
+      <UploadDialog updateUploadState={updateUploadState} isUploadOpen={isUploadOpen}/>
+    <div className="fixed right-8 top-8">
+        <Button onClick={() => setIsUploadOpen(true)} className="flex items-center gap-2">
+          <Upload className="w-4 h-4" />
+          Upload Statement
+        </Button>
+      </div>
     <div className="flex min-h-svh items-center justify-center p-6 flex-col w-full">
   {/* Charts Grid */}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
@@ -125,6 +141,7 @@ export default function Home() {
       <DataTable columns={columns} data={transactionTableList} />
     </div>
 </div>
+  </main>
     </>
   );
 }

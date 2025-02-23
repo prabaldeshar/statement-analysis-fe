@@ -58,4 +58,7 @@ theme: {
   }
 },
 plugins: [require("tailwindcss-animate")],
+corePlugins: {
+  animation: true,
+},
 };
