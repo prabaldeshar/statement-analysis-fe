@@ -57,7 +57,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    fetch("http://localhost:8000/expenses/category/")
+    fetch("http://localhost:8001/expenses/category/")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`)
@@ -72,7 +72,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    fetch("http://localhost:8000/expenses/payment-method/")
+    fetch("http://localhost:8001/expenses/payment-method/")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`)
@@ -87,7 +87,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    fetch("http://localhost:8000/expenses/")
+    fetch("http://localhost:8001/expenses/")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`)
@@ -102,7 +102,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    fetch("http://localhost:8000/transactions/")
+    fetch("http://localhost:8001/transactions/")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`)
@@ -122,7 +122,7 @@ export default function Home() {
     <>
     <main className="min-h-screen p-8">
       <UploadDialog updateUploadState={updateUploadState} isUploadOpen={isUploadOpen}/>
-    <div className="fixed right-8 top-8">
+      <div className="flex justify-end md:fixed md:right-8 md:top-8">
         <Button onClick={() => setIsUploadOpen(true)} className="flex items-center gap-2">
           <Upload className="w-4 h-4" />
           Upload Statement

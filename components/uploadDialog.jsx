@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { cn } from "@/lib/utils"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function UploadDialog({ isUploadOpen, updateUploadState }) {
   const [file, setFile] = useState(null)
@@ -52,12 +53,14 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
   const handleUpload = async () => {
     if (!file) return
     setIsUploading(true)
+    
+    document.body.style.pointerEvents = "none";
 
     const formData = new FormData()
     formData.append("file", file)
 
     try {
-        const response = await fetch("http://localhost:8000/upload/statement/", {
+        const response = await fetch("http://localhost:8001/upload/statement/", {
             method: "POST",
             body: formData,
         })
@@ -71,7 +74,8 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
     } catch (error) {
         alert(error.message)
     } finally {
-        setIsUploading(false)
+        setIsUploading(false);
+        document.body.style.pointerEvents = "auto";
     }
   }
 
@@ -81,7 +85,9 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
       <input ref={fileInputRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleFileSelect} />
 
       {/* Upload Dialog */}
-      <Dialog open={isUploadOpen} onOpenChange={updateUploadState} >
+      <Dialog open={isUploadOpen} onOpenChange={(state) => {
+            if (!isUploading) updateUploadState(state); // Prevent closing when uploading
+          }} >
         <DialogContent className="sm:max-w-lg p-0 overflow-hidden dark:bg-gray-950">
           <DialogTitle asChild>
             <VisuallyHidden>Upload Bank Statement</VisuallyHidden>
@@ -94,13 +100,13 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
             >
               <VisuallyHidden>Close</VisuallyHidden>
             </button>
-            <div className="flex items-center space-x-3 text-blue-600 dark:text-blue-500">
-              <FileSpreadsheet className="w-6 h-6" aria-hidden="true" />
+            <div className="flex items-center space-x-3  dark:text-blue-500">
+              <FileSpreadsheet className="w-6 h-6 text-green-600" aria-hidden="true" />
               <h2 className="text-xl font-semibold">Upload Statement</h2>
             </div>
-            <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">
-              Upload your bank statement in Excel format (.xlsx, .xls) or CSV format
-            </p>
+            <div className="mt-10 items-center text-black-600 dark:text-black-500">
+              Upload your bank statement in Excel format (.xlsx, .xls)
+            </div>
           </div>
 
           <div className="p-6">
@@ -145,7 +151,7 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
                         "File selected"
                       ) : (
                         <>
-                          Drag and drop or <span className="text-blue-600 dark:text-blue-500">browse</span>
+                          Drag and drop or <span className="text-black-600 dark:text-blue-500">browse</span>
                         </>
                       )}
                     </p>
@@ -161,7 +167,8 @@ export default function UploadDialog({ isUploadOpen, updateUploadState }) {
                         {
                             isUploading ? (
                                 <>
-                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />
+                                    {/* <Loader2 className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" /> */}
+                                    <Spinner />
                                     Uploading...
                                 </>
                             ) : (
